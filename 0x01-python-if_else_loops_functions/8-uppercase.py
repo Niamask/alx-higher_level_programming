@@ -5,6 +5,8 @@ def upper(c):
         return (chr(65 + (asci - 97)))
     else:
         return (c)
+
+
 def uppercase(str):
     for loop in str:
         print("{}".format(upper(loop)), end="")
