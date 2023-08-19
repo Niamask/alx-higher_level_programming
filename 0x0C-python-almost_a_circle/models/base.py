@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Creating a base class"""
+"""Creating a base simple class"""
 
 import json
 import csv
