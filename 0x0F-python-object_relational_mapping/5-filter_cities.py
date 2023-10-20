@@ -6,32 +6,27 @@ that state, database `hbtn_0e_4_usa`.
 """
 
 import MySQLdb
-import sys
 from sys import argv
 
-if __name__ == "__main__":
-    if (len(sys.argv) == 5):
-        user = sys.argv[1]
-        password = sys.argv[2]
-        database = sys.argv[3]
-        conn = MySQLdb.connect(
-            host="localhost",
-            port=3306,
-            user=user,
-            passwd=password,
-            db=database,
-            charset="utf8")
-        cur = conn.cursor()
-        sql = "SELECT cities.name FROM cities INNER \
-        JOIN states ON cities.state_id = states.id \
-        WHERE states.name LIKE '{}' ORDER BY \
-        cities.id".format(sys.argv[4])
-        cur.execute(sql)
-        query_rows = cur.fetchall()
-        _len = len(query_rows)
-        if _len != 0:
-            for i in range(_len - 1):
-                print("{}, ".format(query_rows[i][0]), end="")
-            print(query_rows[_len-1][0])
-        cur.close()
-        conn.close()
+if __name__ == '__main__':
+    """
+    Access to the database and get the states
+    from the database.
+    """
+    db_connect = MySQLdb.connect(
+        host="localhost", user=argv[1], port=3306, passwd=argv[2], db=argv[3])
+
+    db_cursor = db_connect.cursor()
+
+    db_cursor.execute("SELECT cities.name FROM cities JOIN states \
+            ON cities.state_id = states.id WHERE states.name = %(state_name)s \
+            ORDER BY cities.id ASC", {'state_name' : argv[4]})
+
+    rows_selected = db_cursor.fetchall()
+    longueur = len(rows_selected)
+    if longueur != 0:
+        for i in range(longueur - 1):
+            print("{}, ".format(rows_selected[i][0]), end="")
+        print(rows_selected[longueur - 1][0])
+    db_cursor.close()
+    db_connect.close()
