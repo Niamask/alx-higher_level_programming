@@ -23,8 +23,10 @@ if __name__ == '__main__':
             ORDER BY cities.id ASC", {'state_name' : argv[4]})
 
     rows_selected = db_cursor.fetchall()
-
-    for row in rows_selected:
-        print(row)
+    longueur = len(rows_selected)
+    if longueur != 0:
+        for i in range(longueur - 1):
+            print("{}, ".format(rows_selected[i][0]), end="")
+        print(rows_selected[longueur - 1][0])
     db_cursor.close()
     db_connect.close()
